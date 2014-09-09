@@ -26,8 +26,11 @@ public class SocialDatabase {
 	
 	SocialDatabase(){
 		try {
+			//Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			//con = DriverManager.getConnection("jdbc:sqlserver://104.38.19.191:53544;databaseName=SocialNetDB","sa","juee16east");
 			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
 			con = DriverManager.getConnection("jdbc:odbc:login_dsm");
+		
 		}
 	
 		catch (Exception e){
@@ -109,6 +112,7 @@ public class SocialDatabase {
 			st.executeUpdate("insert UserAccounts values ('"+u+"', '"+p+"', '"+n+"')");
 			String currentID = getAccountID(u);
 			st.executeUpdate("insert Friends values ("+currentID+", "+currentID+")");
+			//st.executeUpdate("insert UserOnline values ("");
 			result = true; 
 		}
 		catch (Exception e){
@@ -177,11 +181,21 @@ public class SocialDatabase {
 		
 		for (int i = 0; i < status.length(); i++){
 			statusChar.add(status.charAt(i));
+			
+			if (status.charAt(i) == '\''){
+				statusChar.add('\'');
+			}
 		}
+		
+		StringBuilder inputStatus = new StringBuilder(statusChar.size());
+		for (Character c: statusChar){
+			inputStatus.append(c);
+		}
+		System.out.println(inputStatus);
 		try{
 			
 			Statement st = con.createStatement();
-			st.executeUpdate("insert StatusUpdates values ("+aID+", '"+status+"', GETDATE())");
+			st.executeUpdate("insert StatusUpdates values ("+aID+", '"+inputStatus+"', GETDATE())");
 			result = true; 
 		}
 		catch (Exception e){
