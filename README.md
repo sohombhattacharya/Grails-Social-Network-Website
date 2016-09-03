@@ -13,4 +13,4 @@ grails-app/controllers
 
 HTML Source Code
 ----------------
-grails-app/views/stocks
+grails-app/views/social
